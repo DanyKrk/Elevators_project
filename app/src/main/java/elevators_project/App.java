@@ -3,12 +3,27 @@
  */
 package elevators_project;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+public class App {
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    public static void main(String[] args) throws IOException{
+        int storeysNum;
+        int elevatorsNum;
+        System.out.println("How many storeys does the building have?: ");
+        storeysNum = Integer.parseInt(reader.readLine());
+        while(storeysNum < 1){
+            System.out.println("The number of storeys should be an integer greater than 0. Please enter the correct number of storeys: ");
+            storeysNum = Integer.parseInt(reader.readLine());
+        }
+        System.out.println("How many elevators does the building have (1-16)?");
+        elevatorsNum = Integer.parseInt(reader.readLine());
+        while(elevatorsNum > 16 || elevatorsNum < 1){
+            System.out.println("The number of elevators should be an integer between 1 and 16. Pleasen enter the correct number of elevators: ");
+            elevatorsNum = Integer.parseInt(reader.readLine());
+        }
     }
 }

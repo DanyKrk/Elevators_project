@@ -1,6 +1,6 @@
 # Elevators_project
 
-This is an app for managing the elevators in the building. Just run it (main method in App.java), and the program will tell you what to do in the command prompt.
+This is an app for managing the elevators in the building. Just run it preferably in IDE, or using "./gradlew run" command, and the program will tell you what to do in the command prompt.
 
 The app assigns the orders to the elevators by choosing the elevator that at the moment of issuing the request would need the least amount of simulation steps to serve the order. This assignment heuristics can be changed by using 
 in ElevatorSystem class different class implementing the ElevatorChoosingStrategy interface.

@@ -3,8 +3,6 @@ package elevators_project.elevator;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.lang.model.util.ElementScanner6;
-
 import elevators_project.destinationchoosingstrategy.DestinationChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
 import elevators_project.exceptions.WrongFloorException;

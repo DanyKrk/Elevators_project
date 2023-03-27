@@ -15,4 +15,6 @@ public interface Elevator {
     public void setDestinationFloor(int destinationFloor) throws WrongFloorException;
 
     public String status();
+
+    public void update(int currentFloor, int destinationFloor) throws WrongFloorException;
 }

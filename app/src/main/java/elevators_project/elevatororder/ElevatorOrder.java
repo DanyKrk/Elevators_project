@@ -14,4 +14,8 @@ public class ElevatorOrder {
             this.direction = Direction.DOWN;
         }
     }
+
+    public int getOrderFloor() {
+        return this.orderFloor;
+    }
 }

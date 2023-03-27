@@ -1,6 +1,7 @@
 package elevators_project.elevatorsystem;
 
 import elevators_project.destinationchoosingstrategy.DestinationChoosingStrategy;
+import elevators_project.destinationchoosingstrategy.MyDestinationChoosingStrategy;
 import elevators_project.elevator.DefaultElevator;
 import elevators_project.elevator.Elevator;
 import elevators_project.elevatorchoosingstrategy.ElevatorChoosingStrategy;
@@ -21,15 +22,16 @@ public class ElevatorSystem {
     public ElevatorSystem(int floorsNum, int elevatorsNum) {
         this.floorsNum = floorsNum;
         this.elevatorsNum = elevatorsNum;
+        destinationChoosingStrategy = new MyDestinationChoosingStrategy();
         elevators = new ArrayList<Elevator>();
         for (int i = 0; i < elevatorsNum; i++) {
-            elevators.add(new DefaultElevator(i, floorsNum, 0, 0));
+            elevators.add(new DefaultElevator(i, floorsNum, destinationChoosingStrategy));
         }
     }
 
     public void pickup(int floor, int direction) throws WrongFloorException {
         if (floor >= floorsNum || floor < 0) {
-            throw new WrongFloorException("There is no floor " + floor);
+            throw new WrongFloorException("There is no floor: " + floor);
         }
         ElevatorOrder order = new ElevatorOrder(floor, direction);
         Elevator chosenElevator = elevatorChoosingStrategy.chooseElevator(this.elevators, order);
@@ -47,8 +49,7 @@ public class ElevatorSystem {
         if (elevator == null) {
             throw new WrongIdException("There is no elevator with id: " + id);
         }
-        elevator.setCurrentFloor(currentFloor);
-        elevator.setDestinationFloor(destinationFloor);
+        elevator.update(currentFloor, destinationFloor);
     }
 
     public void step() {

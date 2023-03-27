@@ -125,7 +125,7 @@ public class DefaultElevator implements Elevator {
         if (this.currentlyServedOrder != null) {
             destinationFloor = this.currentlyServedOrder.getOrderFloor();
         }
-        return "(" + this.id + ", " + this.currentFloor + ", " + destinationFloor + ", "
+        return "(Id: " + this.id + ", Curr floor: " + this.currentFloor + ", Dest floor: " + destinationFloor + ", "
                 + this.state + ")";
     }
 

@@ -31,7 +31,7 @@ public class DefaultElevator implements Elevator {
 
     public void pickup(ElevatorOrder order) {
         this.orders.add(order);
-        currentlyServedOrder = destinationChoosingStrategy.getNextServedOrder(orders, direction);
+        currentlyServedOrder = destinationChoosingStrategy.getNextServedOrder(orders, direction, this.currentFloor);
     }
 
     public void step() {
@@ -88,7 +88,7 @@ public class DefaultElevator implements Elevator {
             steps += 1;
 
         }
-        ElevatorOrder nextOrder = this.destinationChoosingStrategy.getNextServedOrder(tempOrders, direction);
+        ElevatorOrder nextOrder = this.destinationChoosingStrategy.getNextServedOrder(tempOrders, direction, tempFloor);
         while (nextOrder != order) {
             tempOrders.remove(nextOrder);
             if (nextOrder.getOrderFloor() - tempFloor > 0) {
@@ -97,8 +97,9 @@ public class DefaultElevator implements Elevator {
                 direction = Direction.DOWN;
             }
             steps += Math.abs(nextOrder.getOrderFloor() - tempFloor);
+            tempFloor = nextOrder.getOrderFloor();
             steps += 2;
-            nextOrder = this.destinationChoosingStrategy.getNextServedOrder(tempOrders, direction);
+            nextOrder = this.destinationChoosingStrategy.getNextServedOrder(tempOrders, direction, tempFloor);
         }
         steps += Math.abs(nextOrder.getOrderFloor() - tempFloor);
         return steps;

@@ -12,10 +12,9 @@ import elevators_project.exceptions.WrongFloorException;
 import elevators_project.exceptions.WrongIdException;
 
 public class App {
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    // TODO static buffered reader?
 
     public static void main(String[] args) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int floorsNum = -1;
         int elevatorsNum = -1;
         ElevatorSystem elevatorSystem;

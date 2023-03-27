@@ -1,7 +1,10 @@
 package elevators_project.elevator;
 
+import javax.tools.Diagnostic;
+
 import elevators_project.destinationchoosingstrategy.DestinationChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
+import elevators_project.exceptions.WrongFloorException;
 
 public class DefaultElevator implements Elevator {
     private int id;
@@ -27,11 +30,17 @@ public class DefaultElevator implements Elevator {
         return this.id;
     }
 
-    public void setCurrentFloor(int currentFloor) {
+    public void setCurrentFloor(int currentFloor) throws WrongFloorException {
+        if (currentFloor > floorsNum || currentFloor < 0) {
+            throw new WrongFloorException("There is no floor " + currentFloor);
+        }
         this.currentFloor = currentFloor;
     }
 
-    public void setDestinationFloor(int destinationFloor) {
+    public void setDestinationFloor(int destinationFloor) throws WrongFloorException {
+        if (destinationFloor > floorsNum || destinationFloor < 0) {
+            throw new WrongFloorException("There is no floor " + destinationFloor);
+        }
         this.destinationFloor = destinationFloor;
     }
 

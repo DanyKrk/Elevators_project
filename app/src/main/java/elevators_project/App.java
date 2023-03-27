@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import elevators_project.elevatorsystem.ElevatorSystem;
+import elevators_project.exceptions.WrongFloorException;
 import elevators_project.exceptions.WrongIdException;
 
 public class App {
@@ -65,7 +66,6 @@ public class App {
                     case "pickup":
                         System.out.println("Enter the floor where the elevator is ordered: ");
                         int floor = Integer.parseInt(reader.readLine());
-                        // TODO - check the correctness of the floor
                         System.out.println(
                                 "Enter the direction (positive number means up, negative number means down): ");
                         // TODO - do something better than positive/ negative number
@@ -75,7 +75,6 @@ public class App {
                     case "update":
                         System.out.println("Enter the ID of the elevator to update: ");
                         int id = Integer.parseInt(reader.readLine());
-                        // TODO - check the correctness of the ID
                         System.out.println("Enter the current floor of the elevator: ");
                         // TODO - do something better than positive/ negative number
                         int curr_fl = Integer.parseInt(reader.readLine());
@@ -94,7 +93,9 @@ public class App {
             } catch (IOException e) {
                 System.out.println("Error reading input. Please try again.");
             } catch (WrongIdException e) {
-                System.out.println("Wrong Id specified: " + e.getMessage());
+                System.out.println("Wrong id specified: " + e.getMessage());
+            } catch (WrongFloorException e) {
+                System.out.println("Wrong floor specified: " + e.getMessage());
             }
         }
     }

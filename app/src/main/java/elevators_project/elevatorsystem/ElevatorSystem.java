@@ -5,6 +5,7 @@ import elevators_project.elevator.DefaultElevator;
 import elevators_project.elevator.Elevator;
 import elevators_project.elevatorchoosingstrategy.ElevatorChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
+import elevators_project.exceptions.WrongFloorException;
 import elevators_project.exceptions.WrongIdException;
 
 import java.util.ArrayList;
@@ -12,28 +13,31 @@ import java.util.List;
 
 public class ElevatorSystem {
     private List<Elevator> elevators;
-    private int storeysNum;
+    private int floorsNum;
     private int elevatorsNum;
     private ElevatorChoosingStrategy elevatorChoosingStrategy;
     private DestinationChoosingStrategy destinationChoosingStrategy;
 
-    public ElevatorSystem(int storeysNum, int elevatorsNum) {
-        this.storeysNum = storeysNum;
+    public ElevatorSystem(int floorsNum, int elevatorsNum) {
+        this.floorsNum = floorsNum;
         this.elevatorsNum = elevatorsNum;
         elevators = new ArrayList<Elevator>();
         for (int i = 0; i < elevatorsNum; i++) {
-            elevators.add(new DefaultElevator(i, storeysNum, 0, 0));
+            elevators.add(new DefaultElevator(i, floorsNum, 0, 0));
         }
     }
 
-    public void pickup(int floor, int direction) {
+    public void pickup(int floor, int direction) throws WrongFloorException {
+        if (floor >= floorsNum || floor < 0) {
+            throw new WrongFloorException("There is no floor " + floor);
+        }
         ElevatorOrder order = new ElevatorOrder(floor, direction);
         Elevator chosenElevator = elevatorChoosingStrategy.chooseElevator(this.elevators, order);
         chosenElevator.pickup(order);
 
     }
 
-    public void update(int id, int currentFloor, int destinationFloor) throws WrongIdException {
+    public void update(int id, int currentFloor, int destinationFloor) throws WrongIdException, WrongFloorException {
         Elevator elevator = null;
         for (int i = 0; i < elevatorsNum; i++) {
             if (elevators.get(i).getId() == id) {
@@ -41,7 +45,7 @@ public class ElevatorSystem {
             }
         }
         if (elevator == null) {
-            throw new WrongIdException("There is no elevator with ID: " + id);
+            throw new WrongIdException("There is no elevator with id: " + id);
         }
         elevator.setCurrentFloor(currentFloor);
         elevator.setDestinationFloor(destinationFloor);

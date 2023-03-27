@@ -168,4 +168,8 @@ public class DefaultElevator implements Elevator {
         return steps;
     }
 
+    public Direction getDirection() {
+        return this.direction;
+    }
+
 }

@@ -59,16 +59,25 @@ public class App {
 
         String command = "";
         while (!command.equals("q")) {
-            System.out.println("Eter the command (pickup/update/step/status) or exit by entering q: ");
+            System.out.println("Enter the command (order/pickup/update/step/status) or exit by entering q: ");
             try {
                 command = reader.readLine();
                 switch (command) {
+                    case "order":
+                        System.out.println(
+                                "Enter the id of the elevator where the order is issued: ");
+                        int elId = Integer.parseInt(reader.readLine());
+                        System.out.println("Enter the floor where the elevator is ordered: ");
+                        int orderFloor = Integer.parseInt(reader.readLine());
+                        elevatorSystem.order(elId, orderFloor);
+                        break;
                     case "pickup":
                         System.out.println("Enter the floor where the elevator is ordered: ");
                         int floor = Integer.parseInt(reader.readLine());
                         System.out.println(
                                 "Enter the direction (positive number means up, negative number means down): ");
                         int direction = Integer.parseInt(reader.readLine());
+                        // TODO - do something better than positive/negative numbers
                         elevatorSystem.pickup(floor, direction);
                         break;
                     case "update":

@@ -9,6 +9,7 @@ import elevators_project.elevatorchoosingstrategy.MyElevatorChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
 import elevators_project.exceptions.WrongFloorException;
 import elevators_project.exceptions.WrongIdException;
+import elevators_project.util.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,30 @@ public class ElevatorSystem {
         ElevatorOrder order = new ElevatorOrder(floor, direction);
         Elevator chosenElevator = elevatorChoosingStrategy.chooseElevator(this.elevators, order);
         chosenElevator.pickup(order);
+    }
 
+    public void order(int id, int orderFloor) throws WrongFloorException, WrongIdException {
+        Elevator elevator = null;
+        for (int i = 0; i < elevatorsNum; i++) {
+            if (elevators.get(i).getId() == id) {
+                elevator = elevators.get(i);
+            }
+        }
+        if (elevator == null) {
+            throw new WrongIdException("There is no elevator with id: " + id);
+        }
+        if (orderFloor >= floorsNum || orderFloor < 0) {
+            throw new WrongFloorException("There is no floor: " + orderFloor);
+        }
+        int directionNum;
+        if (elevator.getDirection() == Direction.UP) {
+            directionNum = 1;
+        } else {
+            directionNum = -1;
+        }
+        // TODO - do something better than positive/negative numbers
+        ElevatorOrder order = new ElevatorOrder(orderFloor, directionNum);
+        elevator.pickup(order);
     }
 
     public void update(int id, int currentFloor, int destinationFloor) throws WrongIdException, WrongFloorException {

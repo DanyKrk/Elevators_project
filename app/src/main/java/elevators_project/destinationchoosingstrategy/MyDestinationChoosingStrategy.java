@@ -6,7 +6,6 @@ import elevators_project.util.Direction;
 
 public class MyDestinationChoosingStrategy implements DestinationChoosingStrategy {
 
-    @Override
     public ElevatorOrder getNextServedOrder(List<ElevatorOrder> orders, Direction direction, int floor) {
         ElevatorOrder nextServedOrder = null;
         int minDist = Integer.MAX_VALUE;

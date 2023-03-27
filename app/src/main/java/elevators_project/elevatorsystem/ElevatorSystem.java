@@ -5,6 +5,7 @@ import elevators_project.elevator.DefaultElevator;
 import elevators_project.elevator.Elevator;
 import elevators_project.elevatorchoosingstrategy.ElevatorChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
+import elevators_project.exceptions.WrongIdException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ElevatorSystem {
 
     }
 
-    public void update(int id, int currentFloor, int destinationFloor) {
+    public void update(int id, int currentFloor, int destinationFloor) throws WrongIdException {
         Elevator elevator = null;
         for (int i = 0; i < elevatorsNum; i++) {
             if (elevators.get(i).getId() == id) {
@@ -40,8 +41,7 @@ public class ElevatorSystem {
             }
         }
         if (elevator == null) {
-            // TODO - exception
-            return;
+            throw new WrongIdException("There is no elevator with ID: " + id);
         }
         elevator.setCurrentFloor(currentFloor);
         elevator.setDestinationFloor(destinationFloor);

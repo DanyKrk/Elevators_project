@@ -5,14 +5,14 @@ import elevators_project.elevatororder.ElevatorOrder;
 
 public class DefaultElevator implements Elevator {
     private int id;
-    private int storeysNum;
+    private int floorsNum;
     private int currentFloor;
     private int destinationFloor;
     private DestinationChoosingStrategy destinationChoosingStrategy;
 
     public DefaultElevator(int id, int storeysNum, int currentFloor, int destinationFloor) {
         this.id = id;
-        this.storeysNum = storeysNum;
+        this.floorsNum = storeysNum;
         this.currentFloor = currentFloor;
         this.destinationFloor = destinationFloor;
     }
@@ -23,22 +23,16 @@ public class DefaultElevator implements Elevator {
     public void step() {
     }
 
-    private void updateDestination() {
-
-    }
-
     public int getId() {
         return this.id;
     }
 
     public void setCurrentFloor(int currentFloor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCurrentFloor'");
+        this.currentFloor = currentFloor;
     }
 
     public void setDestinationFloor(int destinationFloor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDestinationFloor'");
+        this.destinationFloor = destinationFloor;
     }
 
     public String status() {

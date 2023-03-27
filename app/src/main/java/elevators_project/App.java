@@ -8,65 +8,93 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import elevators_project.elevatorsystem.ElevatorSystem;
+import elevators_project.exceptions.WrongIdException;
 
 public class App {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     // TODO static buffered reader?
 
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        int storeysNum;
-        int elevatorsNum;
+    public static void main(String[] args) {
+        int floorsNum = -1;
+        int elevatorsNum = -1;
         ElevatorSystem elevatorSystem;
 
+        boolean validInput = false;
         System.out.println("How many storeys does the building have?: ");
-        storeysNum = Integer.parseInt(reader.readLine());
-        while (storeysNum < 1) {
-            System.out.println(
-                    "The number of storeys should be an integer greater than 0. Please enter the correct number of storeys: ");
-            storeysNum = Integer.parseInt(reader.readLine());
+        while (!validInput) {
+            try {
+                floorsNum = Integer.parseInt(reader.readLine());
+                if (floorsNum < 1) {
+                    System.out.println(
+                            "The number of storeys should be an integer greater than 0. Please enter the correct number of storeys: ");
+                } else {
+                    validInput = true;
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading input. Please try again: ");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number:");
+            }
         }
+        validInput = false;
         System.out.println("How many elevators does the building have (1-16)?");
-        elevatorsNum = Integer.parseInt(reader.readLine());
-        while (elevatorsNum > 16 || elevatorsNum < 1) {
-            System.out.println(
-                    "The number of elevators should be an integer between 1 and 16. Pleasen enter the correct number of elevators: ");
-            elevatorsNum = Integer.parseInt(reader.readLine());
+        while (!validInput) {
+            try {
+                elevatorsNum = Integer.parseInt(reader.readLine());
+                if (elevatorsNum > 16 || elevatorsNum < 1) {
+                    System.out.println(
+                            "The number of elevators should be an integer between 1 and 16. Pleasen enter the correct number of elevators: ");
+                } else {
+                    validInput = true;
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading input. Please try again.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
         }
 
-        elevatorSystem = new ElevatorSystem(storeysNum, elevatorsNum);
+        elevatorSystem = new ElevatorSystem(floorsNum, elevatorsNum);
 
         String command = "";
         while (!command.equals("q")) {
             System.out.println("Eter the command (pickup/update/step/status) or exit by entering q: ");
-            command = reader.readLine();
-            switch (command) {
-                case "pickup":
-                    System.out.println("Enter the floor where the elevator is ordered: ");
-                    int floor = Integer.parseInt(reader.readLine());
-                    // TODO - check the correctness of the floor
-                    System.out.println("Enter the direction (positive number means up, negative number means down): ");
-                    // TODO - do something better than positive/ negative number
-                    int direction = Integer.parseInt(reader.readLine());
-                    elevatorSystem.pickup(floor, direction);
-                    break;
-                case "update":
-                    System.out.println("Enter the ID of the elevator to update: ");
-                    int id = Integer.parseInt(reader.readLine());
-                    // TODO - check the correctness of the ID
-                    System.out.println("Enter the current floor of the elevator: ");
-                    // TODO - do something better than positive/ negative number
-                    int curr_fl = Integer.parseInt(reader.readLine());
-                    System.out.println("Enter the destination floor of the elevator: ");
-                    // TODO - do something better than positive/ negative number
-                    int dest_fl = Integer.parseInt(reader.readLine());
-                    elevatorSystem.update(id, curr_fl, dest_fl);
-                    break;
-                case "step":
-                    elevatorSystem.step();
-                    break;
-                case "status":
-                    System.out.println("Status: " + elevatorSystem.status());
-                    break;
+            try {
+                command = reader.readLine();
+                switch (command) {
+                    case "pickup":
+                        System.out.println("Enter the floor where the elevator is ordered: ");
+                        int floor = Integer.parseInt(reader.readLine());
+                        // TODO - check the correctness of the floor
+                        System.out.println(
+                                "Enter the direction (positive number means up, negative number means down): ");
+                        // TODO - do something better than positive/ negative number
+                        int direction = Integer.parseInt(reader.readLine());
+                        elevatorSystem.pickup(floor, direction);
+                        break;
+                    case "update":
+                        System.out.println("Enter the ID of the elevator to update: ");
+                        int id = Integer.parseInt(reader.readLine());
+                        // TODO - check the correctness of the ID
+                        System.out.println("Enter the current floor of the elevator: ");
+                        // TODO - do something better than positive/ negative number
+                        int curr_fl = Integer.parseInt(reader.readLine());
+                        System.out.println("Enter the destination floor of the elevator: ");
+                        // TODO - do something better than positive/ negative number
+                        int dest_fl = Integer.parseInt(reader.readLine());
+                        elevatorSystem.update(id, curr_fl, dest_fl);
+                        break;
+                    case "step":
+                        elevatorSystem.step();
+                        break;
+                    case "status":
+                        System.out.println("Status: " + elevatorSystem.status());
+                        break;
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading input. Please try again.");
+            } catch (WrongIdException e) {
+                System.out.println("Wrong Id specified: " + e.getMessage());
             }
         }
     }

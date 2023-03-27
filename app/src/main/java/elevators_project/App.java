@@ -68,7 +68,6 @@ public class App {
                         int floor = Integer.parseInt(reader.readLine());
                         System.out.println(
                                 "Enter the direction (positive number means up, negative number means down): ");
-                        // TODO - do something better than positive/ negative number
                         int direction = Integer.parseInt(reader.readLine());
                         elevatorSystem.pickup(floor, direction);
                         break;
@@ -76,10 +75,8 @@ public class App {
                         System.out.println("Enter the ID of the elevator to update: ");
                         int id = Integer.parseInt(reader.readLine());
                         System.out.println("Enter the current floor of the elevator: ");
-                        // TODO - do something better than positive/ negative number
                         int curr_fl = Integer.parseInt(reader.readLine());
                         System.out.println("Enter the destination floor of the elevator: ");
-                        // TODO - do something better than positive/ negative number
                         int dest_fl = Integer.parseInt(reader.readLine());
                         elevatorSystem.update(id, curr_fl, dest_fl);
                         break;
@@ -96,7 +93,10 @@ public class App {
                 System.out.println("Wrong id specified: " + e.getMessage());
             } catch (WrongFloorException e) {
                 System.out.println("Wrong floor specified: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please try again.");
             }
+
         }
     }
 }

@@ -5,6 +5,7 @@ import elevators_project.destinationchoosingstrategy.MyDestinationChoosingStrate
 import elevators_project.elevator.DefaultElevator;
 import elevators_project.elevator.Elevator;
 import elevators_project.elevatorchoosingstrategy.ElevatorChoosingStrategy;
+import elevators_project.elevatorchoosingstrategy.MyElevatorChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
 import elevators_project.exceptions.WrongFloorException;
 import elevators_project.exceptions.WrongIdException;
@@ -23,6 +24,7 @@ public class ElevatorSystem {
         this.floorsNum = floorsNum;
         this.elevatorsNum = elevatorsNum;
         destinationChoosingStrategy = new MyDestinationChoosingStrategy();
+        elevatorChoosingStrategy = new MyElevatorChoosingStrategy();
         elevators = new ArrayList<Elevator>();
         for (int i = 0; i < elevatorsNum; i++) {
             elevators.add(new DefaultElevator(i, floorsNum, destinationChoosingStrategy));

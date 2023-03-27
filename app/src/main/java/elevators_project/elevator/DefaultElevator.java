@@ -3,6 +3,8 @@ package elevators_project.elevator;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.lang.model.util.ElementScanner6;
+
 import elevators_project.destinationchoosingstrategy.DestinationChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
 import elevators_project.exceptions.WrongFloorException;
@@ -35,7 +37,68 @@ public class DefaultElevator implements Elevator {
     }
 
     public void step() {
+        if (currentlyServedOrder != null) {
+            int destNum = currentlyServedOrder.getOrderFloor() - this.currentFloor;
+            if (destNum == 0) {
+                switch (state) {
+                    case GOING_DOWN:
+                    case GOING_UP:
+                    case CLOSING_DOORS:
+                        this.state = ElevatorState.OPENING_DOORS;
+                        orders.remove(currentlyServedOrder);
+                        currentlyServedOrder = destinationChoosingStrategy.getNextServedOrder(orders, direction,
+                                this.currentFloor);
+                        break;
+                    case OPENING_DOORS:
+                    case WAITING:
+                        orders.remove(currentlyServedOrder);
+                        currentlyServedOrder = destinationChoosingStrategy.getNextServedOrder(orders, direction,
+                                this.currentFloor);
+                        break;
 
+                }
+            } else if (destNum > 0) {
+                switch (state) {
+                    case GOING_DOWN:
+                    case GOING_UP:
+                    case CLOSING_DOORS:
+                        this.direction = Direction.UP;
+                        this.state = ElevatorState.GOING_UP;
+                        this.currentFloor += 1;
+                        break;
+                    case OPENING_DOORS:
+                    case WAITING:
+                        this.state = ElevatorState.CLOSING_DOORS;
+                        break;
+                }
+            } else {
+                switch (state) {
+                    case GOING_DOWN:
+                    case GOING_UP:
+                    case CLOSING_DOORS:
+                        this.direction = Direction.DOWN;
+                        this.state = ElevatorState.GOING_DOWN;
+                        this.currentFloor -= 1;
+                        break;
+                    case OPENING_DOORS:
+                    case WAITING:
+                        this.state = ElevatorState.CLOSING_DOORS;
+                        break;
+                }
+            }
+        } else {
+            switch (state) {
+                case GOING_DOWN:
+                case GOING_UP:
+                case CLOSING_DOORS:
+                    this.state = ElevatorState.OPENING_DOORS;
+                    break;
+                case OPENING_DOORS:
+                case WAITING:
+                    this.state = ElevatorState.WAITING;
+                    break;
+            }
+        }
     }
 
     public int getId() {

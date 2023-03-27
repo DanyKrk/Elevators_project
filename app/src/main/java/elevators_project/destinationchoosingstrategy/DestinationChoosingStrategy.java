@@ -4,7 +4,8 @@ import java.util.List;
 
 import elevators_project.elevator.ElevatorState;
 import elevators_project.elevatororder.ElevatorOrder;
+import elevators_project.util.Direction;
 
 public interface DestinationChoosingStrategy {
-    public ElevatorOrder getCurrentlyServedOrder(List<ElevatorOrder> orders, ElevatorState state);
+    public ElevatorOrder getNextServedOrder(List<ElevatorOrder> orders, Direction lastDirection);
 }

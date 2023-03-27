@@ -6,6 +6,7 @@ import java.util.List;
 import elevators_project.destinationchoosingstrategy.DestinationChoosingStrategy;
 import elevators_project.elevatororder.ElevatorOrder;
 import elevators_project.exceptions.WrongFloorException;
+import elevators_project.util.Direction;
 
 public class DefaultElevator implements Elevator {
     private int id;
@@ -15,6 +16,7 @@ public class DefaultElevator implements Elevator {
     private List<ElevatorOrder> orders;
     private DestinationChoosingStrategy destinationChoosingStrategy;
     private ElevatorState state;
+    private Direction direction;
 
     public DefaultElevator(int id, int floorsNum, DestinationChoosingStrategy strategy) {
         this.id = id;
@@ -24,14 +26,16 @@ public class DefaultElevator implements Elevator {
         this.destinationChoosingStrategy = strategy;
         this.state = ElevatorState.WAITING;
         this.orders = new ArrayList<ElevatorOrder>();
+        this.direction = Direction.UP;
     }
 
     public void pickup(ElevatorOrder order) {
         this.orders.add(order);
-        currentlyServedOrder = destinationChoosingStrategy.getCurrentlyServedOrder(orders, state);
+        currentlyServedOrder = destinationChoosingStrategy.getNextServedOrder(orders, direction);
     }
 
     public void step() {
+
     }
 
     public int getId() {
@@ -67,6 +71,37 @@ public class DefaultElevator implements Elevator {
     public void update(int currentFloor, int destinationFloor) throws WrongFloorException {
         this.setCurrentFloor(currentFloor);
         this.setDestinationFloor(destinationFloor);
+    }
+
+    public List<ElevatorOrder> getOrders() {
+        return this.orders;
+    }
+
+    public int calculateNumberOfSteps(ElevatorOrder order) {
+        int steps = 0;
+        List<ElevatorOrder> tempOrders = new ArrayList<>(this.orders);
+        tempOrders.add(order);
+        ElevatorState tempState = this.state;
+        int tempFloor = this.currentFloor;
+        Direction direction = this.direction;
+        if (tempState == ElevatorState.CLOSING_DOORS) {
+            steps += 1;
+
+        }
+        ElevatorOrder nextOrder = this.destinationChoosingStrategy.getNextServedOrder(tempOrders, direction);
+        while (nextOrder != order) {
+            tempOrders.remove(nextOrder);
+            if (nextOrder.getOrderFloor() - tempFloor > 0) {
+                direction = Direction.UP;
+            } else if (nextOrder.getOrderFloor() - tempFloor < 0) {
+                direction = Direction.DOWN;
+            }
+            steps += Math.abs(nextOrder.getOrderFloor() - tempFloor);
+            steps += 2;
+            nextOrder = this.destinationChoosingStrategy.getNextServedOrder(tempOrders, direction);
+        }
+        steps += Math.abs(nextOrder.getOrderFloor() - tempFloor);
+        return steps;
     }
 
 }

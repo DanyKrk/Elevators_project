@@ -1,5 +1,7 @@
 package elevators_project.elevator;
 
+import java.util.List;
+
 import elevators_project.elevatororder.ElevatorOrder;
 import elevators_project.exceptions.WrongFloorException;
 
@@ -17,4 +19,8 @@ public interface Elevator {
     public String status();
 
     public void update(int currentFloor, int destinationFloor) throws WrongFloorException;
+
+    public List<ElevatorOrder> getOrders();
+
+    public int calculateNumberOfSteps(ElevatorOrder order);
 }

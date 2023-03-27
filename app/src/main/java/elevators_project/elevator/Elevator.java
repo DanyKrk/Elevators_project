@@ -7,4 +7,11 @@ public interface Elevator {
 
     public void step();
 
+    public int getId();
+
+    public void setCurrentFloor(int currentFloor);
+
+    public void setDestinationFloor(int destinationFloor);
+
+    public String status();
 }

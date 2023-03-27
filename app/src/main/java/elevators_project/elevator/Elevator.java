@@ -1,10 +1,10 @@
 package elevators_project.elevator;
 
-public class Elevator {
-    private int storeysNum;
+import elevators_project.elevatororder.ElevatorOrder;
 
-    public Elevator(int storeysNum) {
-        this.storeysNum = storeysNum;
-    }
+public interface Elevator {
+    public void pickup(ElevatorOrder order);
+
+    public void step();
 
 }
